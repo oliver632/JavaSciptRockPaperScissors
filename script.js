@@ -1,5 +1,3 @@
-console.log("Hello World!");
-
 function computerPlay() {
     let options = ["rock", "paper", "scissors"];
     return options[(Math.floor(Math.random()*3))];
@@ -42,3 +40,4 @@ function game(){
     console.log(`The computer won ${computerWins} times and you won ${humanWins} times`);
     console.log((computerWins>humanWins ? "You lose..." : computerWins<humanWins ? "You Win!" : "It's a tie."));
 }
+game()
