@@ -20,6 +20,7 @@ function playRound(computerSelection, humanSelection){
 
 }
 
+
 function game(){
     let humanWins = 0;
     let computerWins = 0;
@@ -27,7 +28,7 @@ function game(){
     console.log("Let's just start, choose your first pick:");
 
     for (let i = 0; i < 5; i++) {
-        let humanSelection = prompt("Rock, paper or scissors?");
+
         let rawStringResult = playRound(computerPlay(),humanSelection);
         console.log(rawStringResult);
         if(rawStringResult.includes("Win")){
@@ -40,4 +41,3 @@ function game(){
     console.log(`The computer won ${computerWins} times and you won ${humanWins} times`);
     console.log((computerWins>humanWins ? "You lose..." : computerWins<humanWins ? "You Win!" : "It's a tie."));
 }
-game()
