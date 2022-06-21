@@ -1,10 +1,6 @@
-function computerPlay() {
-    let options = ["rock", "paper", "scissors"];
-    return options[(Math.floor(Math.random()*3))];
-}
-
 function playRound(computerSelection, humanSelection){
     humanSelection = humanSelection.toLowerCase();
+    computerSelection = computerSelection.toLowerCase();
     if(computerSelection === "rock") {
         return (humanSelection == "rock" ? "Tie" : humanSelection == "paper" ? "You Win! Paper beats rock." : "You Lose... Rock beats scissors.");
     }
@@ -14,47 +10,59 @@ function playRound(computerSelection, humanSelection){
     if(computerSelection === "scissors") {
         return (humanSelection == "scissors" ? "Tie" : humanSelection == "rock" ? "You Win! Rock beats scissors." : "You Lose... Scissors beats paper.");
     }
-    while(humanSelection !== "rock" || humanSelection !== "scissors" ||humanSelection !== "paper") {
-        return `Invalid input. Choose Rock, Paper og Scissors please.`; 
-    }
+    return "Error!";
 
 }
 //plays a round of the game
-function game(humanSelection){
+function game(player1Choice, player2Choice){
     //gets result from playRound function
-    let rawStringResult = playRound(computerPlay(),humanSelection);
+    console.log(player1Choice);
+    console.log(player2Choice);
+    let rawStringResult = playRound(player2Choice,player1Choice,);
     console.log(rawStringResult);
     //checks result by checking if return from playRound includes win or not.
     if(rawStringResult.includes("Win")){
-        humanScore.textContent = parseInt(humanScore.textContent)+1;
-        resultText.textContent = rawStringResult;
+        player1Score.textContent = parseInt(player1Score.textContent)+1;
+        resultText.textContent = "Player 1 wins";
         resultText.classList.add("win");
     }
     if(rawStringResult.includes("Lose")){
-        computerScore.textContent = parseInt(humanScore.textContent)+1;
-        resultText.textContent = rawStringResult;
-        resultText.classList.add("lose");
+        player2Score.textContent = parseInt(player2Score.textContent)+1;
+        resultText.textContent = "Player 2 wins";
+        resultText.classList.add("win");
     }
     if(rawStringResult.includes("Tie")){
-        resultText.textContent = rawStringResult+". You both picked " + humanSelection.toLowerCase()+".";
+        resultText.textContent = rawStringResult+". You both picked " + player2Choice.toLowerCase()+".";
         resultText.classList.add("tie");
     }
 
     //if the human wins open a modal and reset scores
-    if(humanScore.textContent === "5"){
-        openModal("You won! Close this to play again.")
+    if(player1Score.textContent === "5"){
+        openModal("Player 1 wins. Close this to start over.")
         restartGame();
     }
     //if the computer wins open a modal and reset scores
-    if(computerScore.textContent === "5"){
-        openModal("You lost to the computer, better luck next time!");
+    if(player2Score.textContent === "5"){
+        openModal("Player 2 wins. Close this to start over.");
         restartGame();
     }
 }
 //Plays a round of the game if one of the buttons are clicked 
 function clickedButton(e){
-    //starts game with text of button as option picked
-    game(this.textContent);
+    if(playerTurn.textContent == "Player 1") {
+        player1Choice = this.textContent;
+        playerTurn.textContent = "Player 2";
+        console.log("player 1 set!");
+        this.classList.add("optionAnimation");
+        return;
+    };
+    if(playerTurn.textContent == "Player 2"){
+        player2Choice = this.textContent;
+        this.classList.add("optionAnimation");
+        console.log("playing game!");
+        playerTurn.textContent = "Player 1";
+        game(player1Choice, player2Choice);
+    }
     //adds animation
     this.classList.add("optionAnimation");
 }
@@ -89,9 +97,10 @@ function openModal(textInModal) {
 }
 
 function restartGame(){
-    computerScore.textContent  = "0";
-    humanScore.textContent = "0";
+    player1Score.textContent  = "0";
+    player2Score.textContent = "0";
     resultText.textContent = null;
+    playerTurn = "Player 1";
 }
 //Opens settings
 function openSettings(){
@@ -119,28 +128,17 @@ function switchMode(e){
     /* MAKE THIS A NEW WEBSITE
     if(e.target.id == "humanVsHuman"){
         //Switch to humanVsHuman
-        restartGame();
         closeSettings("modeClose");
         currentMode = "humanVsHuman";
-        humanScoreText.textContent = "Player 1";
-        computerScoreText.textContent = "Player 2";
-        playerTurn.textContent = "Player 1";
-        playerTurn.style.display = "flex";
-    }
-    if(e.target.id == "humanVsComputer"){
-        //Switch to humanVsComputer
-        restartGame();
-        closeSettings("modeClose");
-        currentMode = "humanVsComputer";
-        humanScoreText.textContent = "You";
-        computerScoreText.textContent = "Computer";
-        playerTurn.textContent = null;
-        playerTurn.style.display = "none";
     }*/
-    
 }
 
-let currentMode = "humanVsComputer";
+let currentMode = "humanVsHuman";
+
+//currentSelection variables
+let player1Choice = null;
+let player2Choice = null;
+
 //get all the elements we will need.
 const resultText = document.querySelector(".result");
 const options = document.querySelectorAll(".option");
@@ -151,9 +149,14 @@ const modalContent = document.querySelector(".modalContent");
 const modal = document.getElementById("myModal");
 const modalCloseButton = document.getElementsByClassName("close")[0];
 
+//PlayerTurn variable for humanVshuman mode
+const playerTurn = document.querySelector(".playerTurn");
+
 //scoreBox variables
-const humanScore = document.querySelector(".humanDisplayScore");
-const computerScore = document.querySelector(".computerDisplayScore");
+const player1Score = document.querySelector(".humanDisplayScore");
+const humanScoreText = document.querySelector(".humanScoreText");
+const player2Score = document.querySelector(".computerDisplayScore");
+const computerScoreText = document.querySelector(".computerScoreText");
 
 //Settings menu variables
 const settingsModal = document.querySelector(".settingsModal");
