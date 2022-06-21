@@ -6,13 +6,13 @@ function computerPlay() {
 function playRound(computerSelection, humanSelection){
     humanSelection = humanSelection.toLowerCase();
     if(computerSelection === "rock") {
-        return (humanSelection == "rock" ? "tie" : humanSelection == "paper" ? "You Win! Paper beats rock!" : "You Lose... Rock beats scissors.");
+        return (humanSelection == "rock" ? "Tie" : humanSelection == "paper" ? "You Win! Paper beats rock." : "You Lose... Rock beats scissors.");
     }
     if(computerSelection === "paper") {
-        return (humanSelection == "paper" ? "tie" : humanSelection == "scissors" ? "You Win! Scissors beats paper!" : "You Lose... Paper beats rock.");
+        return (humanSelection == "paper" ? "Tie" : humanSelection == "scissors" ? "You Win! Scissors beats paper." : "You Lose... Paper beats rock.");
     }
     if(computerSelection === "scissors") {
-        return (humanSelection == "scissors" ? "tie" : humanSelection == "rock" ? "You Win! Rock beats scissors!" : "You Lose... Scissors beats paper.");
+        return (humanSelection == "scissors" ? "Tie" : humanSelection == "rock" ? "You Win! Rock beats scissors." : "You Lose... Scissors beats paper.");
     }
     while(humanSelection !== "rock" || humanSelection !== "scissors" ||humanSelection !== "paper") {
         return `Invalid input. Choose Rock, Paper og Scissors please.`; 
@@ -20,24 +20,57 @@ function playRound(computerSelection, humanSelection){
 
 }
 
+function game(humanSelection){
 
-function game(){
-    let humanWins = 0;
-    let computerWins = 0;
-    console.log("Welcome to this game of Rock, Paper or Scissors!");
-    console.log("Let's just start, choose your first pick:");
-
-    for (let i = 0; i < 5; i++) {
-
-        let rawStringResult = playRound(computerPlay(),humanSelection);
-        console.log(rawStringResult);
-        if(rawStringResult.includes("Win")){
-            humanWins += 1;
-        }
-        if(rawStringResult.includes("Lose")){
-            computerWins += 1;
-        }
+    //gets result from playRound function
+    let rawStringResult = playRound(computerPlay(),humanSelection);
+    console.log(rawStringResult);
+    //checks result by checking if return from playRound includes win or not.
+    if(rawStringResult.includes("Win")){
+        humanScore.textContent = parseInt(humanScore.textContent)+1;
+        resultText.textContent = rawStringResult;
+        resultText.classList.add("win");
     }
-    console.log(`The computer won ${computerWins} times and you won ${humanWins} times`);
-    console.log((computerWins>humanWins ? "You lose..." : computerWins<humanWins ? "You Win!" : "It's a tie."));
+    if(rawStringResult.includes("Lose")){
+        computerScore.textContent = parseInt(humanScore.textContent)+1;
+        resultText.textContent = rawStringResult;
+        resultText.classList.add("lose");
+    }
+    if(rawStringResult.includes("Tie")){
+        resultText.textContent = rawStringResult+". You both picked " + humanSelection.toLowerCase()+".";
+        resultText.classList.add("tie");
+    }
+    if(humanScore.textContent === "5"){
+        //Pop-up with congrats on winning and then reset scores
+        computerScore.textContent  = "0";
+        humanScore.textContent = "0";
+    }
+    if(computerScore.textContent === "5"){
+        //Pop-up 
+        computerScore.textContent  = "0";
+        humanScore.textContent = "0";
+    }
 }
+
+function clicked(e){
+    game(this.textContent);
+}
+
+function removeAnimation(e) {
+    this.classList.remove("lose");
+    this.classList.remove("win");
+    this.classList.remove("tie");
+}
+
+const resultText = document.querySelector(".result");
+const humanScore = document.querySelector(".humanDisplayScore");
+const computerScore = document.querySelector(".computerDisplayScore");
+const options = document.querySelectorAll(".option");
+
+resultText.addEventListener("animationend", removeAnimation);
+
+
+
+options.forEach(option => option.addEventListener("click",clicked));
+
+

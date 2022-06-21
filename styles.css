@@ -30,24 +30,75 @@ body {
     font-size: 40px;
 }
 
-.score {
+.scoreBox {
     border: white solid 2px;
     border-radius: 5px;
     display:flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-evenly;
-    width: 300px;
+    width: 450px;
     text-align: center;
     margin: 20px;
     padding: 10px;
     align-self: center;
 }
 
+.scores {
+    display: flex;
+    flex-direction: row;
+    align-items: space-evenly;
+    justify-content: space-evenly;
+}
+
 .computerScoreText, .humanScoreText {
     font-weight:900;
-    font-size:16px;
+    font-size:28px;
 }
 
 .humanDisplayScore, .computerDisplayScore {
     font-size:28px;
+}
+
+.result {
+    visibility:visible;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size:22px;
+    padding: 0px 10px 10px 10px;
+}
+
+
+/* Win and lose animations*/
+.lose {
+    animation-name: loseAnimation;
+    animation-duration: 0.5s;
+}
+
+@keyframes loseAnimation {
+    0%   {color: red;}
+    50%  {color: red; font-size: 26px;}
+    100% {color: red;}
+}
+
+.win {
+    animation-name: winAnimation;
+    animation-duration: 0.5s;
+}
+
+@keyframes winAnimation {
+    0%   {color: green;}
+    50%  {color: green; font-size: 26px;}
+    100% {color: green;}
+}
+
+.tie {
+    animation-name: tieAnimation;
+    animation-duration: 0.5s;
+}
+
+@keyframes tieAnimation {
+    0%   {color: yellow;}
+    50%  {color: yellow; font-size: 26px;}
+    100% {color: yellow;}
 }
